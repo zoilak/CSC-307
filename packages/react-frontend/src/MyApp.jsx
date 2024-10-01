@@ -25,6 +25,10 @@ function MyApp() {
     // }
   
 
+  function updateList(person) {
+      setCharacters([...characters, person]);
+    }
+
   function removeOneCharacter(index) {
     const updated = characters.filter((character, i) => {
       return i !== index;
@@ -38,7 +42,7 @@ function MyApp() {
           characterData={characters} 
           removeCharacter={removeOneCharacter}
         />
-        <Form />
+        <Form  handleSubmit= {updateList}/>
       </div>
     );
 }
