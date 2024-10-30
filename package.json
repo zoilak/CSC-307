@@ -7,9 +7,14 @@
   },
   "author": "",
   "license": "ISC",
-  "description": ""
-  ,
+  "description": "",
   "workspaces": [
-      "packages/*"
-  ]
+    "packages/*"
+  ],
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "cors": "^2.8.5"
+  }
 }
