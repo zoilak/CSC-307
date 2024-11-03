@@ -22,31 +22,23 @@ function MyApp() {
 
   function updateList(person) { 
     postUser(person)
-    .then((res) => {
-      if (res.status === 201) { // Check for 201 Created
-        setCharacters([...characters, person]);
-      } else {
-        console.log("User not created, status:", res.status);
-      }
-    })
-    .then((newUser) => {
-      if (newUser) {
-        setCharacters([...characters, newUser]); // Update state with the new user including ID
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-}
-
-  function fetchUsers() {
-      const promise = fetch("http://localhost:3000/users");
-      return promise;
+        .then(response => {
+            if (response.status === 201) {
+                response.json().then(newUser => {
+                    setCharacters([...characters, newUser]); // not appending new user
+                    console.log("characters: ", characters);
+                    console.log("new: ", newUser);
+                });                    
+            } 
+            else {
+                throw new Error(`Post: Unexpected status code ${response.status}`);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
   }
-
   
-  
-
   function postUser(person) {
     const promise = fetch("Http://localhost:3000/users", {
       method: "POST",
@@ -60,25 +52,28 @@ function MyApp() {
   }
 
   function removeOneCharacter(index) {
-    const userToRemove = characters[index];
-    
-    fetch(`http://localhost:3000/users/${userToRemove.id}`, {
+    fetch(`http://localhost:3000/users/${index}`, {
         method: "DELETE",
     })
     .then((res) => {
-        if (res.status === 204) { // Check for 204 No Content
-            const updatedCharacters = characters.filter((character, i) => i !== index);
-            setCharacters(updatedCharacters); // Update state if delete was successful
-        } else if (res.status === 404) {
-            console.log("User not found, unable to delete");
-        } else {
-            console.log("Failed to delete, status:", res.status);
-        }
+      if (res.status === 204) {
+        const updated = characters.filter((character) => {
+            return character._id !== index;
+        });
+        setCharacters(updated);
+      } else {
+        throw new Error(`Delete: Unexpected status code ${res.status}`);
+      }
     })
     .catch((error) => {
-        console.log("Error deleting user:", error);
-    });
-}
+        console.log(error);
+    }) 
+    }
+      
+  function fetchUsers() {
+    const promise = fetch("http://localhost:3000/users");
+    return promise;
+  }
 
   return (
     <div className = "container">

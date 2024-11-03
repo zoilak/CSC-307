@@ -17,21 +17,21 @@ function TableHeader(){
 
 function TableBody(props) {
   //console.log("reached" + props.characterData)
-  const rows = props.characterData.map((row) => {
+  const rows = props.characterData.map((row,index) => {
     return (
-      <tr key={row.id}>
-        <td>{row.id}</td>
+      <tr key={index}>
+        <td>{row._id}</td>
         <td>{row.name}</td>
         <td>{row.job}</td>
         
         <td>
-          <button onClick={() => props.removeCharacter(row.id)}>
-          Delete
+          <button onClick={() => props.removeCharacter(row._id)}>
+            Delete
           </button>
         </td>
       </tr>
-    );
-  }
+      );
+    }
   );
     return (
         <tbody>
